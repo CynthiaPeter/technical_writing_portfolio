@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication vs Authorization Flow</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a3b5b 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .step {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 25px;
+            background: #3498db;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .step-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .step-description {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .authentication {
+            border-left: 5px solid #e74c3c;
+        }
+
+        .authorization {
+            border-left: 5px solid #27ae60;
+        }
+
+        .decision {
+            border-left: 5px solid #f39c12;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #3498db;
+            margin: 10px 0;
+        }
+
+        .example-box {
+            background: #ecf0f1;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #9b59b6;
+        }
+
+        .example-title {
+            font-weight: bold;
+            color: #8e44ad;
+            margin-bottom: 5px;
+        }
+
+        .fail-path {
+            background: #ffebee;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .success-path {
+            background: #e8f5e8;
+            border-left: 5px solid #27ae60;
+        }
+
+        .split-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .split-step {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Authentication & Authorization Flow</h1>
+
+        <div class="flow-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-title">User Attempts Access</div>
+                <div class="step-description">
+                    A user tries to access a system, application, or resource
+                    <div class="example-box">
+                        <div class="example-title">Hotel Example:</div>
+                        Sarah arrives at the hotel and wants to access her room
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="step authentication">
+                <div class="step-number">2</div>
+                <div class="step-title">Authentication: "Who Are You?"</div>
+                <div class="step-description">
+                    System verifies the user's identity through credentials
+                    <div class="example-box">
+                        <div class="example-title">Hotel Example:</div>
+                        Sarah shows her ID and confirmation number at the front desk
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="split-container">
+                <div class="step split-step fail-path">
+                    <div class="step-number">✗</div>
+                    <div class="step-title">Authentication Fails</div>
+                    <div class="step-description">
+                        Access denied - user cannot proceed
+                        <div class="example-box">
+                            <div class="example-title">Hotel Result:</div>
+                            "No reservation found" - Sarah is asked to verify her booking
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step split-step success-path">
+                    <div class="step-number">✓</div>
+                    <div class="step-title">Authentication Succeeds</div>
+                    <div class="step-description">
+                        Identity verified - proceed to authorization
+                        <div class="example-box">
+                            <div class="example-title">Hotel Result:</div>
+                            Front desk confirms Sarah's identity and gives her a key card
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="step authorization">
+                <div class="step-number">3</div>
+                <div class="step-title">Authorization: "What Can You Do?"</div>
+                <div class="step-description">
+                    System checks user's permissions and roles for the requested resource
+                    <div class="example-box">
+                        <div class="example-title">Hotel Example:</div>
+                        Sarah tries to use her key card to access the penthouse suite
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="split-container">
+                <div class="step split-step fail-path">
+                    <div class="step-number">✗</div>
+                    <div class="step-title">Authorization Fails</div>
+                    <div class="step-description">
+                        Access denied - user lacks permission
+                        <div class="example-box">
+                            <div class="example-title">Hotel Result:</div>
+                            Red light - Sarah's key card doesn't work on the penthouse
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step split-step success-path">
+                    <div class="step-number">✓</div>
+                    <div class="step-title">Authorization Succeeds</div>
+                    <div class="step-description">
+                        Access granted - user can proceed
+                        <div class="example-box">
+                            <div class="example-title">Hotel Result:</div>
+                            Green light - Sarah's key card opens her assigned room
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step decision">
+                <div class="step-number">!</div>
+                <div class="step-title">Key Point: Continuous Process</div>
+                <div class="step-description">
+                    Authorization happens every time a user tries to access something new, even within the same session
+                    <div class="example-box">
+                        <div class="example-title">Hotel Example:</div>
+                        Sarah can access her room and the gym, but not the executive lounge or other guests' rooms
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
